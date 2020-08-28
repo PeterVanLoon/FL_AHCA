@@ -1,48 +1,11 @@
 import sqlite3
 import os
 import sys
-import FLAHCAModule
+import FLAHCAC3AModule
 import FLAHCAC2Module
+import FLAHCAC3AIPOPModule
+import FLAHCAValidations
 
-def Which_Hospital(cursor):
-    cursor.execute("""SELECT DISTINCT QUV_SUB_C3A.FILE_NBR FROM QUV_SUB_C3A""")
-    result = cursor.fetchall()
-
-    hospitallist = []
-    for r in result:
-        hospitallist.append(r[0])
-        #print(r[0])
-    #print(hospitallist)
-
-    while True:
-        try:
-            hospital_ahca_number = int(input("Please enter the Hospital's Florida AHCA number:"))
-            if hospital_ahca_number in hospitallist:
-                print("That is a valid AHCA number")
-                break
-            else:
-                print("NOT A VALID AHCA NUMBER - Please enter a number that is vaild")
-        except:
-            continue
-    return hospital_ahca_number
-
-def Charges_Validation(Total_Charges,C2_Total_Charges):
-    if Total_Charges != C2_Total_Charges:
-        print("Charges from C3A do not match those from C2")
-    else:
-        print("Charges from C3A and C2 match!! All good")
-
-def Revenue_Validation(Total_Revenue,C2_Total_Revenue,Employee_Discounts,Other_Deductions,C2_Other_Op_Revenue):
-    if Total_Revenue != (C2_Total_Revenue - Employee_Discounts - Other_Deductions - C2_Other_Op_Revenue):
-        print("C3A Total Revenue :", Total_Revenue)
-        print("c2 C2_Total_Revenue is :", C2_Total_Revenue)
-        print("EE Discounts :", Employee_Discounts)
-        print("Other deductions :", Other_Deductions)
-        print("C2_Other_Op_Revenue", C2_Other_Op_Revenue)
-        print("C2 Adjusted Revenue  :", (C2_Total_Revenue - Employee_Discounts - Other_Deductions - C2_Other_Op_Revenue))
-        print("Total Revenue from C3A do not match those from C2")
-    else:
-        print("Revenue from C3A and C2 match!! All good")
 
 
 def main(argv):
@@ -51,29 +14,32 @@ def main(argv):
     cursor = conn.cursor()
     print("This is from where the database is sourced:  ",db)
 
-    hospital_ahca_number = Which_Hospital(cursor) #input("Enter IP Address: ")
+    # This is from where I get the FL AHCA number and check its validity
+    hospital_ahca_number = FLAHCAValidations.Which_Hospital(cursor) #input("Enter IP Address: ")
 
 
-    Medicare_Charges = FLAHCAModule.MedicareCharges(hospital_ahca_number,cursor)
-    Medicare_Revenues = FLAHCAModule.MedicareRevenues(hospital_ahca_number,cursor)
-    MedicAID_Charges = FLAHCAModule.MedicAIDCharges(hospital_ahca_number,cursor)
-    MedicAID_Revenues = FLAHCAModule.MedicAIDRevenues(hospital_ahca_number,cursor)
-    OtherGov_Charges = FLAHCAModule.OtherGovCharges(hospital_ahca_number,cursor)
-    OtherGov_Revenues = FLAHCAModule.OtherGovRevenues(hospital_ahca_number,cursor)
+    Medicare_Charges = FLAHCAC3AModule.MedicareCharges(hospital_ahca_number,cursor)
+    Medicare_Revenues = FLAHCAC3AModule.MedicareRevenues(hospital_ahca_number,cursor)
+    MedicAID_Charges = FLAHCAC3AModule.MedicAIDCharges(hospital_ahca_number,cursor)
+    MedicAID_Revenues = FLAHCAC3AModule.MedicAIDRevenues(hospital_ahca_number,cursor)
+    OtherGov_Charges = FLAHCAC3AModule.OtherGovCharges(hospital_ahca_number,cursor)
+    OtherGov_Revenues = FLAHCAC3AModule.OtherGovRevenues(hospital_ahca_number,cursor)
 
-    CharityBadDebt_Charges = FLAHCAModule.CharityBadDebtCharges(hospital_ahca_number,cursor)
-    CharityBadDebt_Revenues = FLAHCAModule.CharityBadDebtRevenues(hospital_ahca_number,cursor)
-    NonMagCareComm_Charges = FLAHCAModule.NonMagCareCommCharges(hospital_ahca_number,cursor)
-    NonMagCareComm_Revenues = FLAHCAModule.NonMagCareCommRevenues(hospital_ahca_number,cursor)
+    CharityBadDebt_Charges = FLAHCAC3AModule.CharityBadDebtCharges(hospital_ahca_number,cursor)
+    CharityBadDebt_Revenues = FLAHCAC3AModule.CharityBadDebtRevenues(hospital_ahca_number,cursor)
+    NonMagCareComm_Charges = FLAHCAC3AModule.NonMagCareCommCharges(hospital_ahca_number,cursor)
+    NonMagCareComm_Revenues = FLAHCAC3AModule.NonMagCareCommRevenues(hospital_ahca_number,cursor)
     #CSN_Charges = FLAHCAModule.CSNCharges(hospital_ahca_number,cursor)
     #CSN_Revenues = FLAHCAModule.CSNRevenues(hospital_ahca_number,cursor)
-    MgdCareComm_Charges = FLAHCAModule.MgdCareCommCharges(hospital_ahca_number,cursor)
-    MgdCareComm_Revenues = FLAHCAModule.MgdCareCommRevenues(hospital_ahca_number,cursor)
-    Employee_Discounts = FLAHCAModule.EmployeeDiscounts(hospital_ahca_number,cursor)
-    Other_Deductions = FLAHCAModule.OtherDeductions(hospital_ahca_number,cursor)
+    MgdCareComm_Charges = FLAHCAC3AModule.MgdCareCommCharges(hospital_ahca_number,cursor)
+    MgdCareComm_Revenues = FLAHCAC3AModule.MgdCareCommRevenues(hospital_ahca_number,cursor)
+    Employee_Discounts = FLAHCAC3AModule.EmployeeDiscounts(hospital_ahca_number,cursor)
+    Other_Deductions = FLAHCAC3AModule.OtherDeductions(hospital_ahca_number,cursor)
 
     Total_Charges = Medicare_Charges + MedicAID_Charges + OtherGov_Charges + CharityBadDebt_Charges + NonMagCareComm_Charges + MgdCareComm_Charges
     Total_Revenue = Medicare_Revenues + MedicAID_Revenues + OtherGov_Revenues + CharityBadDebt_Revenues + NonMagCareComm_Revenues + MgdCareComm_Revenues
+
+
     print()
     print("ALL OF THESE BELOW ARE FROM C3A")
     print("_______________________________")
@@ -114,12 +80,30 @@ def main(argv):
     print("C2 Other Operating Revenue is :", C2_Other_Op_Revenue)
     print("C2 Total Operating Expense is :", C2_Total_Op_Expense)
     print("Expense as a percent of charges is:", Expense_ratio)
+
+# Generation of IP and OP numbers for Commercial PPO and FLAHCAModule
+    MgdCareComm_INPATIENT_Charges = FLAHCAC3AIPOPModule.IPCharges(hospital_ahca_number,cursor)
+    MgdCareComm_INPATIENT_Revenue = FLAHCAC3AIPOPModule.IPRevenue(hospital_ahca_number,cursor)
+    MgdCareComm_OUTPATIENT_Charges = FLAHCAC3AIPOPModule.OPCharges(hospital_ahca_number,cursor)
+    MgdCareComm_OUTPATIENT_Revenue = FLAHCAC3AIPOPModule.OPRevenue(hospital_ahca_number,cursor)
+
+
+    print()
+    print("ALL OF THESE BELOW ARE FROM C3A")
+    print("_______________________________")
+    print("Managed Care Commercial INPATIENT Charges are   :", MgdCareComm_INPATIENT_Charges)
+    print("Managed Care Commercial INPATIENT Revenue is   :", MgdCareComm_INPATIENT_Revenue)
+    print("Managed Care Commercial OUTPATIENT Charges are   :", MgdCareComm_OUTPATIENT_Charges)
+    print("Managed Care Commercial OUTPATIENT Revenue is   :", MgdCareComm_OUTPATIENT_Revenue)
+
 #Does C3A totals match c2?#
 
     print()
-    Charges_Validation(Total_Charges,C2_Total_Charges)
-    Revenue_Validation(Total_Revenue,C2_Total_Revenue,Employee_Discounts,Other_Deductions,C2_Other_Op_Revenue)
-
+    print("VALIDATION SECTION")
+    print("_______________________________")
+    FLAHCAValidations.Charges_Validation(Total_Charges,C2_Total_Charges)
+    FLAHCAValidations.Revenue_Validation(Total_Revenue,C2_Total_Revenue,Employee_Discounts,Other_Deductions,C2_Other_Op_Revenue)
+    FLAHCAValidations.IPOP_Validation(MgdCareComm_Charges, MgdCareComm_Revenues, MgdCareComm_INPATIENT_Charges, MgdCareComm_OUTPATIENT_Charges, MgdCareComm_INPATIENT_Revenue, MgdCareComm_OUTPATIENT_Revenue)
 
 if __name__ == "__main__":
   main(sys.argv)
