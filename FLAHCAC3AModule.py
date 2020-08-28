@@ -2,9 +2,11 @@ import sqlite3
 import os
 import sys
 
+#For these, I use the CAST in my SQL query.
+
 def MedicareCharges(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.TOTAL_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.TOTAL_REVENUE AS INT),CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==5 or r[1]==10:
@@ -14,7 +16,7 @@ def MedicareCharges(hospital_ahca_number,cursor):
 
 def MedicareRevenues(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.NET_PATIENT_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.NET_PATIENT_REVENUE AS INT), CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==5 or r[1]==10:
@@ -24,7 +26,7 @@ def MedicareRevenues(hospital_ahca_number,cursor):
 
 def MedicAIDCharges(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.TOTAL_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.TOTAL_REVENUE AS INT),CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==6 or r[1]==11:
@@ -34,7 +36,7 @@ def MedicAIDCharges(hospital_ahca_number,cursor):
 
 def MedicAIDRevenues(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.NET_PATIENT_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.NET_PATIENT_REVENUE AS INT), CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==6 or r[1]==11:
@@ -44,7 +46,7 @@ def MedicAIDRevenues(hospital_ahca_number,cursor):
 
 def OtherGovCharges(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.TOTAL_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.TOTAL_REVENUE AS INT),CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==7:
@@ -54,7 +56,7 @@ def OtherGovCharges(hospital_ahca_number,cursor):
 
 def OtherGovRevenues(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.NET_PATIENT_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.NET_PATIENT_REVENUE AS INT), CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==7:
@@ -64,7 +66,7 @@ def OtherGovRevenues(hospital_ahca_number,cursor):
 
 def CharityBadDebtCharges(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.TOTAL_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.TOTAL_REVENUE AS INT),CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         #print(r)
@@ -77,7 +79,7 @@ def CharityBadDebtCharges(hospital_ahca_number,cursor):
 
 def CharityBadDebtRevenues(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.NET_PATIENT_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.NET_PATIENT_REVENUE AS INT), CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==1 or r[1]==2 or r[1]==3 or r[1]==4:
@@ -87,7 +89,7 @@ def CharityBadDebtRevenues(hospital_ahca_number,cursor):
 
 def NonMagCareCommCharges(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.TOTAL_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.TOTAL_REVENUE AS INT),CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         #print(r)
@@ -100,7 +102,7 @@ def NonMagCareCommCharges(hospital_ahca_number,cursor):
 
 def NonMagCareCommRevenues(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.NET_PATIENT_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.NET_PATIENT_REVENUE AS INT), CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==14 or r[1]==8:
@@ -110,7 +112,7 @@ def NonMagCareCommRevenues(hospital_ahca_number,cursor):
 
 def MgdCareCommCharges(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.TOTAL_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.TOTAL_REVENUE AS INT),CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         #print(r)
@@ -123,7 +125,7 @@ def MgdCareCommCharges(hospital_ahca_number,cursor):
 
 def MgdCareCommRevenues(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.NET_PATIENT_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.NET_PATIENT_REVENUE AS INT), CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==12 or r[1]==13:
@@ -133,7 +135,7 @@ def MgdCareCommRevenues(hospital_ahca_number,cursor):
 
 def EmployeeDiscounts(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.NET_PATIENT_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.NET_PATIENT_REVENUE AS INT), CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==16:
@@ -143,7 +145,7 @@ def EmployeeDiscounts(hospital_ahca_number,cursor):
 
 def OtherDeductions(hospital_ahca_number,cursor):
     sum = 0
-    cursor.execute("""SELECT QUV_SUB_C3A.NET_PATIENT_REVENUE, QUV_SUB_C3A.LINE_NUMBER FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
+    cursor.execute("""SELECT CAST(QUV_SUB_C3A.NET_PATIENT_REVENUE AS INT), CAST(QUV_SUB_C3A.LINE_NUMBER AS INT) FROM QUV_SUB_C3A WHERE QUV_SUB_C3A.[FILE_NBR]={}""".format(hospital_ahca_number,))
     result = cursor.fetchall()
     for r in result:
         if r[1]==15 or r[1]==17 or r[1]==18 :
